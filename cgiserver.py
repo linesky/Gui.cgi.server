@@ -26,7 +26,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             scn=command.split("/cgi-bin/")
             lscn=len(scn)
             sscn=command.find(".elf")
-            
+            if sscn<0:
+                sscn=command.find(".exe")
             if sscn>-1:
                 result = subprocess.check_output("."+command, stderr=subprocess.STDOUT, shell=True, text=True)
             elif lscn>1:
@@ -93,6 +94,7 @@ def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=80
     try:
         httpd.serve_forever()
     except:
+        
         pass
         
 
