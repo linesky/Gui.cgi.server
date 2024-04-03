@@ -6,10 +6,12 @@ import subprocess
 import shutil
 import os
 import threading
+import multiprocessing
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 builder =None
-
+tt=None
+httpd=None
 def prints(s):
     global builder
     BareboneBuilder.printss(builder,str(s))
@@ -83,11 +85,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(bs)
     
 def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
+    global tt
+    global httpd
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
-    prints(f'Starting httpd on port {port}...')
-    httpd.serve_forever()
-
+    prints('Starting httpd on port '+str(port)+'...')
+    try:
+        httpd.serve_forever()
+    except:
+        pass
+        
 
 
 class BareboneBuilder:
@@ -125,17 +132,30 @@ class BareboneBuilder:
         self.text_area.delete(1.0, tk.END)
 
     def run_kernel(self):
+        global tt
         self.text_area.delete(1.0, tk.END)
         self.text_area.insert(tk.END,"start server\n")
-        self.tt=threading.Thread(target=run)
-        self.tt.start()
+        tt=threading.Thread(target=run)
+        tt.start()
 
     def printss(self,s):
          self.text_area.insert(tk.END,s+"\n")
 
-
+def fff1():
+    global tt
+    global httpd
+    httpd.server_close()
+    
+    
+    
+   
+    
+    print("end")
+    
+    
 
 if __name__ == "__main__":
     root = tk.Tk()
     builder = BareboneBuilder(root)
+    #root.protocol('WM_DELETE_WINDOW',fff1)
     root.mainloop()
