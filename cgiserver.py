@@ -12,7 +12,7 @@ builder =None
 
 def prints(s):
     global builder
-    BareboneBuilder.printss(builder,s)
+    BareboneBuilder.printss(builder,str(s))
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -81,6 +81,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 bs=("Error executing command:\n"+e.output)
                 bs=(bs).encode("utf-8")
                 self.wfile.write(bs)
+    
 def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
